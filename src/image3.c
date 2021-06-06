@@ -1,5 +1,7 @@
 #include <image3.h>
 #include <iboot.h>
+#include <shsh.h>
+#include <cmd.h>
 
 image3_handle_t *image3_new(uint32_t ident) {
     image3_handle_t *result = (image3_handle_t *)malloc(sizeof(image3_handle_t));
@@ -129,3 +131,49 @@ image3_tag_header_t *image3_get_tag_struct(image3_header_t *header, uint32_t tag
 
     return NULL;
 }
+
+#define SHSH_TAG_LENGTH_FULL 128
+
+int do_image3_localize(int argc, struct cmd_arg *args) {
+    void *addr;
+
+    switch (argc) {
+        case 1:
+            addr = (void *)TARGET_LOADADDR;
+            break;
+
+        case 2:
+            addr = (void *)args[1].u;
+            break;
+
+        default:
+            printf("localize [address]\n");
+            return ENOARG;
+    }
+
+    image3_tag_header_t *shsh_tag = image3_get_tag_struct(addr, SHSH_TAG_IDENT);
+    if (!shsh_tag) {
+        printf("failed to find SHSH tag in the requested image\n");
+        return EFAILURE;
+    }
+
+    if (shsh_tag->data_size & 0xF) {
+        printf("invalid SHSH tag data size\n");
+        return EFAILURE;
+    }
+
+    if (shsh_tag->data_size != SHSH_TAG_LENGTH_FULL) {
+        printf("weird SHSH tag data_size, continuing though\n");
+    }
+
+    if (shsh_key_action(kSHSHKeyEncrypt, &shsh_tag->data, &shsh_tag->data, shsh_tag->data_size) != 0) {
+        printf("failed to encrypt with SHSH tag\n");
+        return EFAILURE;
+    }
+
+    printf("done\n");
+
+    return ESUCCESS;
+}
+
+MENU_COMMAND("localize", do_image3_localize, "encrypts SHSH in Image3");

@@ -1,5 +1,5 @@
-#ifndef UTILS_H_included
-#define UTILS_H_included
+#ifndef IMAGE3_H_included
+#define IMAGE3_H_included
 
 #include <libc.h>
 

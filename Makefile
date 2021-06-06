@@ -56,6 +56,7 @@ SOURCES = \
 	$(SRC_ROOT)/cmd.c \
 	$(SRC_ROOT)/bootpage.c \
 	$(SRC_ROOT)/utils.c \
+	$(SRC_ROOT)/shsh.c \
 	$(SRC_ROOT)/image3.c \
 	$(SRC_ROOT)/der.c \
 	$(SRC_ROOT)/overlap.c

@@ -46,6 +46,15 @@ relocate:
         CMP R5, R4 
         BNE relocate_loop
 
+zero_bss:
+    LDR R4, L__bss_end
+    LDR R5, L__payload_end
+    MOV R6, #0x0
+
+    zero_bss_loop:
+        STR R6, [R5], #0x4
+        CMP R4, R5
+        BNE zero_bss_loop
 
 patch_cmd:
     LDR R4, =TARGET_CMD_PATCH
@@ -98,6 +107,9 @@ L__build_tag_string:
 /*
  * Consts used by entry code only
  */
+
+L__bss_end:
+    .long end
 
 L__payload_end:
 	.long edata
