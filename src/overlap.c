@@ -2,14 +2,12 @@
 #include <aes.h>
 #include <der.h>
 #include <libc.h>
+#include <shsh.h>
 #include <random.h>
 #include <image3.h>
 
 #define NUM_OF_ATTEMPTS 50
 #define SHSH_TAG_LENGTH 0x74
-
-static const uint8_t derivedSeed[] = {0xdb, 0x1f, 0x5b, 0x33, 0x60, 0x6c, 0x5f, 0x1c,
-                                      0x19, 0x34, 0xaa, 0x66, 0x58, 0x9c, 0x06, 0x61};
 
 static const char epic_str[] = "OH WHAT THE HELL?!";
 
@@ -66,8 +64,8 @@ int do_overlap(int argc, struct cmd_arg *args) {
 
     shsh_header->data_size += sizeof(image3_tag_header_t);
 
-    uint8_t personalized_key[16];
-    if (aes_crypto_cmd(kAESEncrypt, (void *)&derivedSeed, &personalized_key, sizeof(personalized_key), kAESTypeSHSH, 0, 0) != 0) {
+    const uint8_t *personalized_key;
+    if (!(personalized_key = shsh_key_get())) {
         printf("cannot get personalized key\n");
         return EFAILURE;
     }

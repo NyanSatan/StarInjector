@@ -51,5 +51,14 @@
 
 #define TARGET_AES_CRYPTO_CMD       (TARGET_BASEADDR + (0x22900 + 1))
 #define TARGET_RANDOM_GET_BYTES     (TARGET_BASEADDR + (0x1E174 + 1))
+#define TARGET_ENV_GET_UINT         (TARGET_BASEADDR + (0x18C94 + 1))
+
+
+/*
+ * Target's framebuffer stuff
+ */
+
+#define TARGET_FRAMEBUFFER_HEIGHT  (1136)
+#define TARGET_FRAMEBUFFER_WIDTH   (640)
 
 #endif

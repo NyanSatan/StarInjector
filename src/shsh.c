@@ -13,7 +13,10 @@ int shsh_key_compute() {
 		return 0;
 	}
 
+	printf("computing SHSH key\n");
+
 	if (aes_crypto_cmd(kAESEncrypt, (void *)&derivedSeed, &shsh_key, sizeof(shsh_key), kAESTypeSHSH, 0, 0) != 0) {
+		printf("failed to compute SHSH key\n");
         return -1;
     }
 
@@ -26,8 +29,14 @@ bool shsh_key_is_computed() {
 	return _shsh_key_is_computed;
 }
 
-void *shsh_key_get() {
-	return _shsh_key_is_computed ? (void *)&shsh_key : NULL;
+const void *shsh_key_get() {
+	if (!_shsh_key_is_computed) {
+		if (shsh_key_compute() != 0) {
+			return NULL;
+		}
+	}
+
+	return (const void *)&shsh_key;
 }
 
 int shsh_key_action(shsh_key_action_t action, void *in, void *out, size_t len) {
@@ -55,7 +64,6 @@ int shsh_key_action(shsh_key_action_t action, void *in, void *out, size_t len) {
 int do_shsh_key(int argc, struct cmd_arg *args) {
 	if (!_shsh_key_is_computed) {
 		if (shsh_key_compute() != 0) {
-			printf("failed to compute SHSH key\n");
 			return EFAILURE;
 		}
 	}

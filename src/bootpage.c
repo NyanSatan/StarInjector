@@ -82,6 +82,9 @@ out:
 
 MENU_COMMAND("inject", do_inject, "writes data to bootpage");
 
+/* disabled due to lack of testing and general wackiness */
+
+#if 0
 
 /*
  * TODO: move these 3 to a separate file
@@ -147,6 +150,7 @@ int do_outsource(int argc, struct cmd_arg *args) {
 
 MENU_COMMAND("outsource", do_outsource, "writes out-of-bounds data to bootpage");
 
+#endif
 
 int do_read(int argc, struct cmd_arg *args) {
     if (argc != 4) {

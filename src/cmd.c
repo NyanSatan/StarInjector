@@ -3,11 +3,11 @@
 #include <star.h>
 #include <utils.h>
 
-extern const void commands;
-extern const void ecommands;
+extern uintptr_t _gCommands __asm("section$start$__TEXT$__commands");
+extern uintptr_t _gCommandsEnd __asm("section$end$__TEXT$__commands");
 
-static const struct star_cmd_menu_item *gCommands = &commands;
-static const void *gCommandsEnd = &ecommands;
+static const struct star_cmd_menu_item *gCommands = (struct star_cmd_menu_item *)&_gCommands;
+static const void *gCommandsEnd = &_gCommandsEnd;
 
 struct star_cmd_menu_item *cmd_iterator(struct star_cmd_menu_item *iterator);
 

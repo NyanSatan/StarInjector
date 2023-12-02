@@ -8,9 +8,9 @@ typedef enum {
     kSHSHKeyDecrypt
 } shsh_key_action_t;
 
-int   shsh_key_compute();
-bool  shsh_key_is_computed();
-void *shsh_key_get();
-int   shsh_key_action(shsh_key_action_t action, void *in, void *out, size_t len);
+int         shsh_key_compute();
+bool        shsh_key_is_computed();
+const void *shsh_key_get();
+int         shsh_key_action(shsh_key_action_t action, void *in, void *out, size_t len);
 
 #endif

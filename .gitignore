@@ -1,2 +1,5 @@
 .DS_store
 build/*
+/src/framebuffer.c
+/src/include/framebuffer.h
+/src/include/xnu_font.h

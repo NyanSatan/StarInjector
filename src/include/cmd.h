@@ -16,7 +16,7 @@ struct star_cmd_menu_item {
 };
 
 #define MENU_COMMAND(_cmd, _func, _help) \
-struct star_cmd_menu_item _func##_struct __attribute__((section(".commands"))) = { \
+struct star_cmd_menu_item _func##_struct __attribute__((section("__TEXT,__commands"))) = { \
     .cmd = _cmd, \
     .func = _func, \
     .help = _help \
